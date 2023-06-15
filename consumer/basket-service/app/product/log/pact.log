@@ -1,0 +1,4 @@
+# Logfile created on 2023-06-15 18:06:58 +0300 by logger.rb/66358
+W, [2023-06-15T18:06:58.404890 #14768]  WARN -- : No content type found, performing text diff on body
+W, [2023-06-15T18:06:59.180015 #14773]  WARN -- : No content type found, performing text diff on body
+W, [2023-06-15T18:06:59.955004 #14780]  WARN -- : No content type found, performing text diff on body
