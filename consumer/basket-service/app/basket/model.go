@@ -1,14 +1,19 @@
 package basket
 
+import "time"
+
 type Basket struct {
-	ID     string `json:"id"`
-	UserID string `json:"user_id"`
+	ID        string    `json:"-"`
+	UserID    string    `json:"-"`
+	Products  []Product `json:"-"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }
 
-type BasketProduct struct {
-	BasketID  string
-	ProductID string
-	Quantity  int
+type Product struct {
+	ID        string    `json:"-"`
+	Quantity  int       `json:"-"`
+	BasketID  string    `json:"-"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }
-
-type BasketProducts []BasketProduct

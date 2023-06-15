@@ -2,39 +2,60 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/basket"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/persistence"
+	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/product"
+	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/config"
+	"github.com/eneskzlcn/pact-cdc/httpclient"
 
 	"github.com/eneskzlcn/pact-cdc/postgres"
 	"github.com/eneskzlcn/pact-cdc/server"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	db := postgres.New(postgres.Config{
-		Host:     "localhost",
-		Port:     "5432",
-		DBName:   "pact-cdc",
-		Password: "pact-cdc",
-		Username: "pact-cdc",
+	c := config.New()
+
+	db := postgres.New(&postgres.NewPostgresOpts{
+		Host:     c.Postgres().Host,
+		Port:     c.Postgres().Port,
+		DBName:   c.Postgres().DBName,
+		Password: c.Postgres().Password,
+		Username: c.Postgres().Username,
 	})
 
-	basketRepo := persistence.NewBasketRepository(&persistence.NewRepositoryOpts{
+	logger := logrus.New()
+
+	repository := persistence.NewPostgresRepository(&persistence.NewPostgresRepositoryOpts{
 		DB: db,
+		L:  logger,
 	})
 
-	basketService := basket.NewService(basketRepo)
+	httpClient := httpclient.New()
 
-	basketHandler := basket.NewHandler(basketService)
+	productClient := product.NewClient(&product.NewClientOpts{
+		HTTPClient: httpClient,
+	})
 
-	app := server.New(server.Config{
-		Port: "9000",
+	basketService := basket.NewService(&basket.NewServiceOpts{
+		R: repository, L: logger, PC: productClient,
+	})
+
+	basketHandler := basket.NewHandler(&basket.NewHandlerOpts{
+		S: basketService, L: logger,
+	})
+
+	app := server.New(&server.NewServerOpts{
+		Port: c.Server().Port,
 	}, []server.RouteHandler{
 		basketHandler,
 	})
 
 	if err := app.Run(); err != nil {
 		log.Fatalf("server is closed: %v", err)
+		os.Exit(1)
 	}
 
 }

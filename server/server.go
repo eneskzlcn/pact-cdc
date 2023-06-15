@@ -15,23 +15,23 @@ type Server interface {
 	Run() error
 }
 
-type Config struct {
+type NewServerOpts struct {
 	Port string
 }
 
 type server struct {
-	app    *fiber.App
-	config Config
+	app  *fiber.App
+	opts *NewServerOpts
 }
 
 type RouteHandler interface {
 	SetupRoutes(fr fiber.Router)
 }
 
-func New(config Config, routeHandlers []RouteHandler) Server {
+func New(opts *NewServerOpts, routeHandlers []RouteHandler) Server {
 	app := fiber.New()
 
-	app.Use(cors.New(cors.ConfigDefault))
+	app.Use(cors.New())
 
 	apiGroup := app.Group("/api")
 	v1Group := apiGroup.Group("/v1")
@@ -40,7 +40,7 @@ func New(config Config, routeHandlers []RouteHandler) Server {
 		handler.SetupRoutes(v1Group)
 	}
 
-	s := &server{app: app}
+	s := &server{app: app, opts: opts}
 
 	s.addHealthCheckRoutes()
 
@@ -70,6 +70,6 @@ func (s *server) Run() error {
 			log.Println("Error on shutdown gracefully")
 		}
 	}()
-	fmt.Printf("Configuration Port is :%s", s.config.Port)
-	return s.app.Listen(fmt.Sprintf(":%s", s.config.Port))
+
+	return s.app.Listen(fmt.Sprintf(":%s", s.opts.Port))
 }

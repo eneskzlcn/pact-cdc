@@ -1,0 +1,141 @@
+I, [2023-06-15T18:06:59.954191 #14780]  INFO -- : Registered expected interaction GET /products/bulk
+D, [2023-06-15T18:06:59.954317 #14780] DEBUG -- : {
+  "description": "A request for get products with given ids",
+  "providerState": "i get products with given ids",
+  "request": {
+    "method": "GET",
+    "path": "/products/bulk",
+    "body": {
+      "ids": {
+        "json_class": "Pact::SomethingLike",
+        "contents": [
+          "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
+          "81855ad8-681d-4d86-91e9-1e00167939cb",
+          "6694d2c4-22ac-4208-a007-2939487f6999"
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "json_class": "Pact::ArrayLike",
+      "contents": {
+        "code": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "sint"
+        },
+        "color": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "Teal"
+        },
+        "createdAt": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "1969-05-06T07:45:06.372086413Z"
+        },
+        "id": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "9566c74d-1003-4c4d-bbbb-0407d1e2c649"
+        },
+        "imageURL": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "https://picsum.photos/200/100"
+        },
+        "name": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "Elias Roob"
+        },
+        "price": {
+          "json_class": "Pact::SomethingLike",
+          "contents": 80.97
+        },
+        "type": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "aut"
+        },
+        "updatedAt": {
+          "json_class": "Pact::SomethingLike",
+          "contents": "1982-05-01T01:27:58.605764324Z"
+        }
+      },
+      "min": 3
+    }
+  },
+  "metadata": null
+}
+I, [2023-06-15T18:06:59.954794 #14780]  INFO -- : Received request GET /products/bulk
+D, [2023-06-15T18:06:59.954847 #14780] DEBUG -- : {
+  "path": "/products/bulk",
+  "query": "",
+  "method": "get",
+  "body": {
+    "ids": [
+      "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
+      "81855ad8-681d-4d86-91e9-1e00167939cb",
+      "6694d2c4-22ac-4208-a007-2939487f6999"
+    ]
+  },
+  "headers": {
+    "Content-Length": "126",
+    "Content-Type": "application/json",
+    "Host": "localhost:51007",
+    "User-Agent": "Go-http-client/1.1",
+    "Acccept": "*/*",
+    "Accept-Encoding": "gzip",
+    "Version": "HTTP/1.1"
+  }
+}
+I, [2023-06-15T18:06:59.955120 #14780]  INFO -- : Found matching response for GET /products/bulk
+D, [2023-06-15T18:06:59.955190 #14780] DEBUG -- : {
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "json_class": "Pact::ArrayLike",
+    "contents": {
+      "code": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "sint"
+      },
+      "color": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "Teal"
+      },
+      "createdAt": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "1969-05-06T07:45:06.372086413Z"
+      },
+      "id": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "9566c74d-1003-4c4d-bbbb-0407d1e2c649"
+      },
+      "imageURL": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "https://picsum.photos/200/100"
+      },
+      "name": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "Elias Roob"
+      },
+      "price": {
+        "json_class": "Pact::SomethingLike",
+        "contents": 80.97
+      },
+      "type": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "aut"
+      },
+      "updatedAt": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "1982-05-01T01:27:58.605764324Z"
+      }
+    },
+    "min": 3
+  }
+}
+I, [2023-06-15T18:06:59.955549 #14780]  INFO -- : Verifying - interactions matched
+I, [2023-06-15T18:06:59.955870 #14780]  INFO -- : Cleared interactions

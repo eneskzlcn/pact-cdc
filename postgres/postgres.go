@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type Config struct {
+type NewPostgresOpts struct {
 	Host     string
 	Port     string
 	Username string
@@ -15,8 +15,8 @@ type Config struct {
 	DBName   string
 }
 
-func New(config Config) *sql.DB {
-	db, err := sql.Open("postgres", createDSN(config))
+func New(opts *NewPostgresOpts) *sql.DB {
+	db, err := sql.Open("postgres", createDSNFromOpts(opts))
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +28,7 @@ func New(config Config) *sql.DB {
 	return db
 }
 
-func createDSN(config Config) string {
+func createDSNFromOpts(opts *NewPostgresOpts) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.Username, config.Password, config.DBName)
+		opts.Host, opts.Port, opts.Username, opts.Password, opts.DBName)
 }
