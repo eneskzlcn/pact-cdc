@@ -34,5 +34,14 @@ services:
       # Ngnix config below makes the app accessible on ports 443 and 80, while the Ruby application itself runs on port 9292
       PACT_BROKER_BASE_URL: 'https://localhost http://localhost http://localhost:9292 http://pact-broker:9292 https://host.docker.internal http://host.docker.internal http://host.docker.internal:9292'
 
+  nginx:
+    platform: linux/x86_64
+    image: nginx:alpine
+    depends_on:
+      - pact-broker
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
 volumes:
   postgres-volume:

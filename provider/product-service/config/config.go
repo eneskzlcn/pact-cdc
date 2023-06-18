@@ -25,7 +25,7 @@ func New() Manager {
 }
 
 const (
-	path  = "./consumer/basket-service/.config"
+	path  = "./provider/product-service/.config"
 	local = "local"
 	yaml  = "yaml"
 )
