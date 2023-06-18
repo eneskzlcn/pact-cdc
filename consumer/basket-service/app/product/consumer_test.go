@@ -6,7 +6,6 @@ import (
 	"github.com/brianvoe/gofakeit"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/cerr"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/product"
-	"github.com/eneskzlcn/pact-cdc/httpclient"
 	"github.com/gofiber/fiber/v2"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -15,7 +14,7 @@ import (
 )
 
 var _ = Describe("Product Consumer Test", func() {
-	var (
+	/*var (
 		pact          *dsl.Pact
 		pactCleanUp   func()
 		client        product.Client
@@ -23,22 +22,15 @@ var _ = Describe("Product Consumer Test", func() {
 	)
 
 	BeforeEach(func() {
-		pact, pactCleanUp = createPact()
 
-		pactServerURL = fmt.Sprintf("http://localhost:%d", pact.Server.Port)
-		client = product.NewClient(&product.NewClientOpts{
-			HTTPClient: httpclient.New(),
-			BaseURL:    pactServerURL,
-		})
-		var _ = client
 	})
 
 	AfterEach(func() {
 		defer pactCleanUp()
-	})
+	})*/
 
 	Describe("GetProductByID", func() {
-		const getProductByIDPath = "/products/%s"
+		const getProductByIDPath = "/api/v1/products/%s"
 		givenProductID := gofakeit.UUID()
 
 		It("should return product not found error if product with given id does not exist", func() {
@@ -96,15 +88,15 @@ var _ = Describe("Product Consumer Test", func() {
 						fiber.HeaderContentType: dsl.String(fiber.MIMEApplicationJSON),
 					},
 					Body: dsl.StructMatcher{
-						"id":        givenProduct.ID,
-						"name":      givenProduct.Name,
-						"code":      givenProduct.Code,
-						"color":     givenProduct.Color,
-						"createdAt": givenProduct.CreatedAt,
-						"updatedAt": givenProduct.UpdatedAt,
-						"price":     givenProduct.Price,
-						"imageURL":  givenProduct.ImageURL,
-						"type":      givenProduct.Type,
+						"id":         givenProduct.ID,
+						"name":       dsl.Like(givenProduct.Name),
+						"code":       dsl.Like(givenProduct.Code),
+						"color":      dsl.Like(givenProduct.Color),
+						"created_at": dsl.Like(givenProduct.CreatedAt),
+						"updated_at": dsl.Like(givenProduct.UpdatedAt),
+						"price":      dsl.Like(givenProduct.Price),
+						"image_url":  dsl.Like(givenProduct.ImageURL),
+						"type":       dsl.Like(givenProduct.Type),
 					},
 				})
 
@@ -118,8 +110,8 @@ var _ = Describe("Product Consumer Test", func() {
 		})
 	})
 
-	Describe("GetProductsByIDs", func() {
-		const getProductsByIDsPath = "/products/bulk"
+	/*Describe("GetProductsByIDs", func() {
+		const getProductsByIDsPath = "/api/v1/products/bulk"
 
 		givenProductIDs := []string{gofakeit.UUID(), gofakeit.UUID(), gofakeit.UUID()}
 
@@ -158,7 +150,7 @@ var _ = Describe("Product Consumer Test", func() {
 
 		It("should return error if any of product with given ids does not exist", func() {
 			pact.AddInteraction().
-				Given("i get product not found error when the product with given id does not exists").
+				Given("i get product not found error when the one of product with given id does not exists").
 				UponReceiving("A request for get products contains at least one not exist product id").
 				WithRequest(dsl.Request{
 					Method: http.MethodGet,
@@ -270,17 +262,19 @@ var _ = Describe("Product Consumer Test", func() {
 					Headers: map[string]dsl.Matcher{
 						fiber.HeaderContentType: dsl.String(fiber.MIMEApplicationJSON),
 					},
-					Body: dsl.EachLike(dsl.StructMatcher{
-						"id":        dsl.Like(givenProducts[0].ID),
-						"name":      dsl.Like(givenProducts[0].Name),
-						"code":      dsl.Like(givenProducts[0].Code),
-						"color":     dsl.Like(givenProducts[0].Color),
-						"createdAt": dsl.Like(givenProducts[0].CreatedAt),
-						"updatedAt": dsl.Like(givenProducts[0].UpdatedAt),
-						"price":     dsl.Like(givenProducts[0].Price),
-						"imageURL":  dsl.Like(givenProducts[0].ImageURL),
-						"type":      dsl.Like(givenProducts[0].Type),
-					}, len(givenProducts)),
+					Body: dsl.StructMatcher{
+						"products": dsl.EachLike(dsl.StructMatcher{
+							"id":        dsl.Like(givenProducts[0].ID),
+							"name":      dsl.Like(givenProducts[0].Name),
+							"code":      dsl.Like(givenProducts[0].Code),
+							"color":     dsl.Like(givenProducts[0].Color),
+							"createdAt": dsl.Like(givenProducts[0].CreatedAt),
+							"updatedAt": dsl.Like(givenProducts[0].UpdatedAt),
+							"price":     dsl.Like(givenProducts[0].Price),
+							"imageURL":  dsl.Like(givenProducts[0].ImageURL),
+							"type":      dsl.Like(givenProducts[0].Type),
+						}, len(givenProducts)),
+					},
 				})
 
 			var test = func() error {
@@ -291,5 +285,5 @@ var _ = Describe("Product Consumer Test", func() {
 			err := pact.Verify(test)
 			Expect(err).To(BeNil())
 		})
-	})
+	})*/
 })

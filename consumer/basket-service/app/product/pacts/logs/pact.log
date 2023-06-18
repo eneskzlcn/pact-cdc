@@ -1,20 +1,56 @@
-I, [2023-06-15T18:06:59.954191 #14780]  INFO -- : Registered expected interaction GET /products/bulk
-D, [2023-06-15T18:06:59.954317 #14780] DEBUG -- : {
-  "description": "A request for get products with given ids",
-  "providerState": "i get products with given ids",
+I, [2023-06-18T22:19:34.431454 #90468]  INFO -- : Registered expected interaction GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.431583 #90468] DEBUG -- : {
+  "description": "A request for product with a non exist product id",
+  "providerState": "i get product not found error when the product with given id does not exists",
   "request": {
     "method": "GET",
-    "path": "/products/bulk",
+    "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
-      "ids": {
-        "json_class": "Pact::SomethingLike",
-        "contents": [
-          "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-          "81855ad8-681d-4d86-91e9-1e00167939cb",
-          "6694d2c4-22ac-4208-a007-2939487f6999"
-        ]
-      }
+      "code": 20001,
+      "message": "Product not found."
     }
+  },
+  "metadata": null
+}
+I, [2023-06-18T22:19:34.432025 #90468]  INFO -- : Received request GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.432080 #90468] DEBUG -- : {
+  "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72",
+  "query": "",
+  "method": "get",
+  "headers": {
+    "Content-Type": "application/json",
+    "Host": "localhost:57717",
+    "User-Agent": "Go-http-client/1.1",
+    "Acccept": "*/*",
+    "Accept-Encoding": "gzip",
+    "Version": "HTTP/1.1"
+  }
+}
+I, [2023-06-18T22:19:34.432151 #90468]  INFO -- : Found matching response for GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.432176 #90468] DEBUG -- : {
+  "status": 400,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "code": 20001,
+    "message": "Product not found."
+  }
+}
+I, [2023-06-18T22:19:34.432496 #90468]  INFO -- : Cleared interactions
+I, [2023-06-18T22:19:34.433923 #90468]  INFO -- : Registered expected interaction GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.434057 #90468] DEBUG -- : {
+  "description": "A request for product with a exist product id",
+  "providerState": "i get product with given id",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
   },
   "response": {
     "status": 200,
@@ -22,120 +58,98 @@ D, [2023-06-15T18:06:59.954317 #14780] DEBUG -- : {
       "Content-Type": "application/json"
     },
     "body": {
-      "json_class": "Pact::ArrayLike",
-      "contents": {
-        "code": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "sint"
-        },
-        "color": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "Teal"
-        },
-        "createdAt": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "1969-05-06T07:45:06.372086413Z"
-        },
-        "id": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "9566c74d-1003-4c4d-bbbb-0407d1e2c649"
-        },
-        "imageURL": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "https://picsum.photos/200/100"
-        },
-        "name": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "Elias Roob"
-        },
-        "price": {
-          "json_class": "Pact::SomethingLike",
-          "contents": 80.97
-        },
-        "type": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "aut"
-        },
-        "updatedAt": {
-          "json_class": "Pact::SomethingLike",
-          "contents": "1982-05-01T01:27:58.605764324Z"
-        }
+      "code": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "aut"
       },
-      "min": 3
+      "color": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "Peru"
+      },
+      "created_at": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "1980-08-24T14:31:42.817455089Z"
+      },
+      "id": "52fdfc07-2182-454f-963f-5f0f9a621d72",
+      "image_url": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "https://picsum.photos/200/100"
+      },
+      "name": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "Lina Carroll"
+      },
+      "price": {
+        "json_class": "Pact::SomethingLike",
+        "contents": 42.47
+      },
+      "type": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "quae"
+      },
+      "updated_at": {
+        "json_class": "Pact::SomethingLike",
+        "contents": "2016-09-09T05:17:26.436340495Z"
+      }
     }
   },
   "metadata": null
 }
-I, [2023-06-15T18:06:59.954794 #14780]  INFO -- : Received request GET /products/bulk
-D, [2023-06-15T18:06:59.954847 #14780] DEBUG -- : {
-  "path": "/products/bulk",
+I, [2023-06-18T22:19:34.434491 #90468]  INFO -- : Received request GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.434540 #90468] DEBUG -- : {
+  "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72",
   "query": "",
   "method": "get",
-  "body": {
-    "ids": [
-      "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-      "81855ad8-681d-4d86-91e9-1e00167939cb",
-      "6694d2c4-22ac-4208-a007-2939487f6999"
-    ]
-  },
   "headers": {
-    "Content-Length": "126",
     "Content-Type": "application/json",
-    "Host": "localhost:51007",
+    "Host": "localhost:57717",
     "User-Agent": "Go-http-client/1.1",
     "Acccept": "*/*",
     "Accept-Encoding": "gzip",
     "Version": "HTTP/1.1"
   }
 }
-I, [2023-06-15T18:06:59.955120 #14780]  INFO -- : Found matching response for GET /products/bulk
-D, [2023-06-15T18:06:59.955190 #14780] DEBUG -- : {
+I, [2023-06-18T22:19:34.434608 #90468]  INFO -- : Found matching response for GET /api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72
+D, [2023-06-18T22:19:34.434662 #90468] DEBUG -- : {
   "status": 200,
   "headers": {
     "Content-Type": "application/json"
   },
   "body": {
-    "json_class": "Pact::ArrayLike",
-    "contents": {
-      "code": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "sint"
-      },
-      "color": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "Teal"
-      },
-      "createdAt": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "1969-05-06T07:45:06.372086413Z"
-      },
-      "id": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "9566c74d-1003-4c4d-bbbb-0407d1e2c649"
-      },
-      "imageURL": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "https://picsum.photos/200/100"
-      },
-      "name": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "Elias Roob"
-      },
-      "price": {
-        "json_class": "Pact::SomethingLike",
-        "contents": 80.97
-      },
-      "type": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "aut"
-      },
-      "updatedAt": {
-        "json_class": "Pact::SomethingLike",
-        "contents": "1982-05-01T01:27:58.605764324Z"
-      }
+    "code": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "aut"
     },
-    "min": 3
+    "color": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "Peru"
+    },
+    "created_at": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "1980-08-24T14:31:42.817455089Z"
+    },
+    "id": "52fdfc07-2182-454f-963f-5f0f9a621d72",
+    "image_url": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "https://picsum.photos/200/100"
+    },
+    "name": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "Lina Carroll"
+    },
+    "price": {
+      "json_class": "Pact::SomethingLike",
+      "contents": 42.47
+    },
+    "type": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "quae"
+    },
+    "updated_at": {
+      "json_class": "Pact::SomethingLike",
+      "contents": "2016-09-09T05:17:26.436340495Z"
+    }
   }
 }
-I, [2023-06-15T18:06:59.955549 #14780]  INFO -- : Verifying - interactions matched
-I, [2023-06-15T18:06:59.955870 #14780]  INFO -- : Cleared interactions
+I, [2023-06-18T22:19:34.435040 #90468]  INFO -- : Verifying - interactions matched
+I, [2023-06-18T22:19:34.435392 #90468]  INFO -- : Cleared interactions

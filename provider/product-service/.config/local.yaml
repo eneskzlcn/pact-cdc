@@ -3,10 +3,7 @@ postgres:
   password: "pact-cdc"
   dbName: "pact-cdc"
   host: "localhost"
-  port: "5432"
+  port: "5435"
 
 server:
-  port: "9000"
-
-externalURL:
-  productApi: "http://localhost:9001"
+  port: "9001"

@@ -1,14 +1,12 @@
 package main
 
 import (
-	"log"
-	"os"
-
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/basket"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/persistence"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/product"
 	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/config"
 	"github.com/eneskzlcn/pact-cdc/httpclient"
+	"log"
 
 	"github.com/eneskzlcn/pact-cdc/postgres"
 	"github.com/eneskzlcn/pact-cdc/server"
@@ -37,6 +35,7 @@ func main() {
 
 	productClient := product.NewClient(&product.NewClientOpts{
 		HTTPClient: httpClient,
+		BaseURL:    c.ExternalURL().ProductAPI,
 	})
 
 	basketService := basket.NewService(&basket.NewServiceOpts{
@@ -55,7 +54,6 @@ func main() {
 
 	if err := app.Run(); err != nil {
 		log.Fatalf("server is closed: %v", err)
-		os.Exit(1)
 	}
 
 }
