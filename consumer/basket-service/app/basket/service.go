@@ -12,10 +12,10 @@ import (
 )
 
 type Service interface {
-	CreateBasket(ctx context.Context, req CreateBasketRequest) (*BasketResponse, error)
-	AddProductToBasket(ctx context.Context, req AddProductToBasketRequest) (*BasketResponse, error)
-	GetBasketByID(ctx context.Context, basketID string) (*BasketResponse, error)
-	AddBulkProductToBasket(ctx context.Context, req AddBulkProductToBasketRequest) (*BasketResponse, error)
+	CreateBasket(ctx context.Context, req CreateBasketRequest) (*GetBasketResponse, error)
+	AddProductToBasket(ctx context.Context, req AddProductToBasketRequest) (*GetBasketResponse, error)
+	GetBasketByID(ctx context.Context, basketID string) (*GetBasketResponse, error)
+	AddBulkProductToBasket(ctx context.Context, req AddBulkProductToBasketRequest) (*GetBasketResponse, error)
 }
 
 type service struct {
@@ -38,7 +38,8 @@ func NewService(opts *NewServiceOpts) Service {
 	}
 }
 
-func (s *service) CreateBasket(ctx context.Context, req CreateBasketRequest) (*BasketResponse, error) {
+func (s *service) CreateBasket(
+	ctx context.Context, req CreateBasketRequest) (*GetBasketResponse, error) {
 	basketID := uuid.New().String()
 
 	basket, err := s.repo.CreateBasket(ctx, &Basket{
@@ -54,7 +55,7 @@ func (s *service) CreateBasket(ctx context.Context, req CreateBasketRequest) (*B
 }
 
 func (s *service) AddProductToBasket(
-	ctx context.Context, req AddProductToBasketRequest) (*BasketResponse, error) {
+	ctx context.Context, req AddProductToBasketRequest) (*GetBasketResponse, error) {
 	basket, err := s.repo.GetBasketByID(ctx, req.BasketID)
 	if err != nil || basket == nil || basket.UserID != req.UserID {
 		s.logger.WithField("basket_id", req.BasketID).Error("could not found basket: %v", err)
@@ -71,37 +72,51 @@ func (s *service) AddProductToBasket(
 		return nil, cerr.Processing()
 	}
 
-	return NewBasketResponse(basket, nil), nil
+	productIDs := getIDsOfProducts(basket.Products)
+
+	products, err := s.getProductsByIDs(ctx, productIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewBasketResponse(basket, products), nil
 }
 
 func (s *service) GetBasketByID(
-	ctx context.Context, basketID string) (*BasketResponse, error) {
+	ctx context.Context, basketID string) (*GetBasketResponse, error) {
 	basket, err := s.repo.GetBasketByID(ctx, basketID)
 	if err != nil {
 		s.logger.WithField("basket_id", basketID).Error("could not found basket: %v", err)
 		return nil, cerr.Processing()
 	}
 
-	return NewBasketResponse(basket, nil), nil
+	productIDs := getIDsOfProducts(basket.Products)
+
+	products, err := s.getProductsByIDs(ctx, productIDs)
+	if err != nil {
+		return nil, err
+	}
+	
+	return NewBasketResponse(basket, products), nil
 }
 
 func (s *service) AddBulkProductToBasket(
-	ctx context.Context, req AddBulkProductToBasketRequest) (*BasketResponse, error) {
+	ctx context.Context, req AddBulkProductToBasketRequest) (*GetBasketResponse, error) {
 	basket, err := s.repo.GetBasketByID(ctx, req.BasketID)
 	if err != nil || basket == nil || basket.UserID != req.UserID {
 		s.logger.WithField("basket_id", req.BasketID).Error("could not found basket: %v", err)
 		return nil, cerr.Bag{Code: BasketNotFoundErrCode, Message: "basket not found"}
 	}
 
-	for _, product := range req.Products {
+	for _, prod := range req.Products {
 		_, err := s.repo.AddProductToBasket(ctx, &Product{
-			ID:       product.ID,
-			Quantity: product.Quantity,
+			ID:       prod.ID,
+			Quantity: prod.Quantity,
 			BasketID: basket.ID,
 		})
 		if err != nil {
 			s.logger.WithField("basket_id", req.BasketID).
-				WithField("product_id", product.ID).Error("could not add product to basket: %v", err)
+				WithField("product_id", prod.ID).Error("could not add product to basket: %v", err)
 			return nil, cerr.Processing()
 		}
 	}
@@ -110,13 +125,13 @@ func (s *service) AddBulkProductToBasket(
 }
 
 func (s *service) getProductByID(ctx context.Context, productID string) (*product.Product, error) {
-	product, err := s.productClient.GetProductByID(ctx, productID)
+	prod, err := s.productClient.GetProductByID(ctx, productID)
 	if err != nil {
-		s.logger.WithField("product_id", productID).Error("could not get product from product api: %v", err)
+		s.logger.WithField("product_id", productID).Error("could not get product from product service: %v", err)
 		return nil, cerr.Processing()
 	}
 
-	return product, nil
+	return prod, nil
 }
 
 func (s *service) getProductsByIDs(ctx context.Context, productIDs []string) ([]product.Product, error) {

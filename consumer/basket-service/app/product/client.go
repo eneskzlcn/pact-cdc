@@ -33,8 +33,8 @@ func NewClient(opts *NewClientOpts) Client {
 }
 
 const (
-	getProductByIDPath   = "%s/products/%s"
-	getProductsByIDsPath = "%s/products/bulk"
+	getProductByIDPath   = "%s/api/v1/products/%s"
+	getProductsByIDsPath = "%s/api/v1/products/bulk"
 )
 
 func (c *client) GetProductByID(ctx context.Context, id string) (*Product, error) {
@@ -45,15 +45,16 @@ func (c *client) GetProductByID(ctx context.Context, id string) (*Product, error
 		return nil, err
 	}
 
-	var product Product
-	if err := json.Unmarshal(resBytes, &product); err != nil {
+	var resp GetProductResponse
+	if err := json.Unmarshal(resBytes, &resp); err != nil {
 		return nil, err
 	}
 
-	return &product, nil
+	return &resp.Product, nil
 }
 
-func (c *client) GetProductsByIDs(ctx context.Context, req GetProductByIDsRequest) ([]Product, error) {
+func (c *client) GetProductsByIDs(
+	ctx context.Context, req GetProductByIDsRequest) ([]Product, error) {
 	url := fmt.Sprintf(getProductsByIDsPath, c.baseURL)
 
 	resBytes, err := c.httpClient.GetWithBody(ctx, url, c.headers, req)
@@ -61,10 +62,10 @@ func (c *client) GetProductsByIDs(ctx context.Context, req GetProductByIDsReques
 		return nil, err
 	}
 
-	var product []Product
-	if err := json.Unmarshal(resBytes, &product); err != nil {
+	var resp GetProductsResponse
+	if err := json.Unmarshal(resBytes, &resp); err != nil {
 		return nil, err
 	}
 
-	return product, nil
+	return resp.Products, nil
 }

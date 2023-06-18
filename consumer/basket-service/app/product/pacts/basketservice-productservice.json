@@ -11,7 +11,7 @@
       "providerState": "i get product not found error when the product with given id does not exists",
       "request": {
         "method": "GET",
-        "path": "/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
+        "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
       },
       "response": {
         "status": 400,
@@ -20,15 +20,7 @@
         },
         "body": {
           "code": 20001,
-          "msg": "Product not found."
-        },
-        "matchingRules": {
-          "$.body.code": {
-            "match": "type"
-          },
-          "$.body.msg": {
-            "match": "type"
-          }
+          "message": "Product not found."
         }
       }
     },
@@ -37,7 +29,7 @@
       "providerState": "i get product with given id",
       "request": {
         "method": "GET",
-        "path": "/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
+        "path": "/api/v1/products/52fdfc07-2182-454f-963f-5f0f9a621d72"
       },
       "response": {
         "status": 200,
@@ -45,17 +37,15 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "code": "string",
-          "color": "string",
-          "created_at": {
-          },
-          "id": "string",
-          "image_url": "string",
-          "name": "string",
-          "price": 1.1,
-          "type": "string",
-          "updated_at": {
-          }
+          "code": "aut",
+          "color": "Peru",
+          "created_at": "1980-08-24T14:31:42.817455089Z",
+          "id": "52fdfc07-2182-454f-963f-5f0f9a621d72",
+          "image_url": "https://picsum.photos/200/100",
+          "name": "Lina Carroll",
+          "price": 42.47,
+          "type": "quae",
+          "updated_at": "2016-09-09T05:17:26.436340495Z"
         },
         "matchingRules": {
           "$.body.code": {
@@ -64,7 +54,7 @@
           "$.body.color": {
             "match": "type"
           },
-          "$.body.id": {
+          "$.body.created_at": {
             "match": "type"
           },
           "$.body.image_url": {
@@ -78,149 +68,8 @@
           },
           "$.body.type": {
             "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "A request for get products",
-      "providerState": "i get validation error when no product id is given",
-      "request": {
-        "method": "GET",
-        "path": "/products/bulk"
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "code": 20002,
-          "message": "At least one product id must be given."
-        }
-      }
-    },
-    {
-      "description": "A request for get products contains at least one not exist product id",
-      "providerState": "i get product not found error when the product with given id does not exists",
-      "request": {
-        "method": "GET",
-        "path": "/products/bulk",
-        "body": {
-          "ids": [
-            "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-            "81855ad8-681d-4d86-91e9-1e00167939cb",
-            "6694d2c4-22ac-4208-a007-2939487f6999"
-          ]
-        },
-        "matchingRules": {
-          "$.body.ids": {
-            "match": "type"
-          }
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "code": 20003,
-          "message": "At least one of given product ids does not exist."
-        }
-      }
-    },
-    {
-      "description": "A request for get products with given ids",
-      "providerState": "i get products with given ids",
-      "request": {
-        "method": "GET",
-        "path": "/products/bulk",
-        "body": {
-          "ids": [
-            "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-            "81855ad8-681d-4d86-91e9-1e00167939cb",
-            "6694d2c4-22ac-4208-a007-2939487f6999"
-          ]
-        },
-        "matchingRules": {
-          "$.body.ids": {
-            "match": "type"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "code": "sint",
-            "color": "Teal",
-            "createdAt": "1969-05-06T07:45:06.372086413Z",
-            "id": "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-            "imageURL": "https://picsum.photos/200/100",
-            "name": "Elias Roob",
-            "price": 80.97,
-            "type": "aut",
-            "updatedAt": "1982-05-01T01:27:58.605764324Z"
           },
-          {
-            "code": "sint",
-            "color": "Teal",
-            "createdAt": "1969-05-06T07:45:06.372086413Z",
-            "id": "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-            "imageURL": "https://picsum.photos/200/100",
-            "name": "Elias Roob",
-            "price": 80.97,
-            "type": "aut",
-            "updatedAt": "1982-05-01T01:27:58.605764324Z"
-          },
-          {
-            "code": "sint",
-            "color": "Teal",
-            "createdAt": "1969-05-06T07:45:06.372086413Z",
-            "id": "9566c74d-1003-4c4d-bbbb-0407d1e2c649",
-            "imageURL": "https://picsum.photos/200/100",
-            "name": "Elias Roob",
-            "price": 80.97,
-            "type": "aut",
-            "updatedAt": "1982-05-01T01:27:58.605764324Z"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "min": 3
-          },
-          "$.body[*].*": {
-            "match": "type"
-          },
-          "$.body[*].code": {
-            "match": "type"
-          },
-          "$.body[*].color": {
-            "match": "type"
-          },
-          "$.body[*].createdAt": {
-            "match": "type"
-          },
-          "$.body[*].id": {
-            "match": "type"
-          },
-          "$.body[*].imageURL": {
-            "match": "type"
-          },
-          "$.body[*].name": {
-            "match": "type"
-          },
-          "$.body[*].price": {
-            "match": "type"
-          },
-          "$.body[*].type": {
-            "match": "type"
-          },
-          "$.body[*].updatedAt": {
+          "$.body.updated_at": {
             "match": "type"
           }
         }

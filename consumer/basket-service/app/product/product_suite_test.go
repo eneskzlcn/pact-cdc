@@ -1,6 +1,9 @@
 package product_test
 
 import (
+	"fmt"
+	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/product"
+	"github.com/eneskzlcn/pact-cdc/httpclient"
 	"testing"
 
 	. "github.com/onsi/ginkgo"
@@ -8,16 +11,11 @@ import (
 	"github.com/pact-foundation/pact-go/dsl"
 )
 
-const (
-	productAPIExternalURL = "http://product-api"
-	pactBrokerAddress     = "http://localhost:9292"
-)
-
 var (
-//pact              *dsl.Pact
-//pactCleanup       func()
-//client            product.Client
-//mockConfigManager *config.MockManager
+	pact          *dsl.Pact
+	pactCleanUp   func()
+	client        product.Client
+	pactServerURL string
 )
 
 func TestProductConsumer(t *testing.T) {
@@ -26,32 +24,30 @@ func TestProductConsumer(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	//mockCtrl := gomock.NewController(GinkgoT())
+	pact, pactCleanUp = createPact()
 
-	//mockConfigManager = config.NewMockManager(mockCtrl)
-	//externalURLs := config.ExternalURL{
-	//	ProductAPI: productAPIExternalURL,
-	//}
-	//mockConfigManager.EXPECT().ExternalURL().Return(productAPIExternalURL).AnyTimes()
+	pactServerURL = fmt.Sprintf("http://localhost:%d", pact.Server.Port)
+	client = product.NewClient(&product.NewClientOpts{
+		HTTPClient: httpclient.New(),
+		BaseURL:    pactServerURL,
+	})
+})
 
-	//httpClient := httpclient.New()
-	//
-	//client = product.NewClient(&product.NewClientOpts{
-	//	HTTPClient: httpClient,
-	//	BaseURL:    productAPIExternalURL,
-	//})
+var _ = AfterSuite(func() {
+	defer pactCleanUp()
 })
 
 func createPact() (pact *dsl.Pact, cleanUp func()) {
 	pact = &dsl.Pact{
-		Host:                     "localhost",
-		Consumer:                 "BasketService",
-		Provider:                 "ProductService",
+		Host:     "localhost",
+		Consumer: "BasketService",
+		Provider: "ProductService",
+
 		DisableToolValidityCheck: true,
-		PactFileWriteMode:        "merge",
+		PactFileWriteMode:        "overwrite",
 		LogDir:                   "./pacts/logs",
 	}
-
+	//it must be used otherwise it could not create pact file
 	pact.Setup(true)
 
 	cleanUp = func() { pact.Teardown() }

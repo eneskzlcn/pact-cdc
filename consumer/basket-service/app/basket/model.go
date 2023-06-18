@@ -17,3 +17,12 @@ type Product struct {
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
+
+func getIDsOfProducts(products []Product) []string {
+	ids := make([]string, len(products))
+	for i, p := range products {
+		ids[i] = p.ID
+	}
+
+	return ids
+}

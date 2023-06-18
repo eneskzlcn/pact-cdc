@@ -9,4 +9,4 @@ server:
   port: "9000"
 
 externalURL:
-  productApi: "http://localhost:9001/api/v1"
+  productApi: "http://localhost:9001"

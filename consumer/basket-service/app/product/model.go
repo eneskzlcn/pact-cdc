@@ -17,3 +17,11 @@ type Product struct {
 type GetProductByIDsRequest struct {
 	IDs []string `json:"ids"`
 }
+
+type GetProductResponse struct {
+	Product Product `json:"product"`
+}
+
+type GetProductsResponse struct {
+	Products []Product `json:"products"`
+}
