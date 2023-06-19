@@ -1,11 +1,14 @@
 basket-service:
-	docker-compose -f consumer/basket-service/docker-compose.yml up -d --wait \
-	&& go run consumer/basket-service/main.go
+	docker-compose -f basket-service/docker-compose.yml up -d --wait \
+	&& go run basket-service/main.go
 
 pact-broker:
 	docker-compose -f pact-broker/docker-compose.yml up -d --wait
 
-
 product-service:
-	docker-compose -f provider/product-service/docker-compose.yml up -d --wait \
-	&& go run provider/product-service/main.go
+	docker-compose -f product-service/docker-compose.yml up -d --wait \
+	&& go run product-service/main.go
+
+stock-service:
+	docker-compose -f stock-service/docker-compose.yml up -d --wait \
+	&& go run stock-service/main.go

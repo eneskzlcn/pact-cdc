@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/eneskzlcn/pact-cdc/cerr"
 	"io"
 	"net/http"
-
-	"github.com/eneskzlcn/pact-cdc/consumer/basket-service/app/cerr"
 )
 
 type Client interface {
@@ -18,6 +17,7 @@ type Client interface {
 		headers map[string]string,
 		body interface{},
 	) ([]byte, error)
+	Put(ctx context.Context, url string, headers map[string]string, body interface{}) ([]byte, error)
 }
 
 type client struct {
@@ -92,6 +92,39 @@ func (c *client) GetWithBody(
 
 	return io.ReadAll(resp.Body)
 
+}
+
+func (c *client) Put(ctx context.Context, url string, headers map[string]string, body interface{}) ([]byte, error) {
+	bodyBytes, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, url, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		var bag cerr.Bag
+		if err = json.NewDecoder(resp.Body).Decode(&bag); err != nil {
+			return nil, err
+		}
+
+		return nil, bag
+	}
+
+	return io.ReadAll(resp.Body)
 }
 
 var DefaultHeaders = map[string]string{
